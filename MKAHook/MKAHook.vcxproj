@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release Win64|x64">
+      <Configuration>Release Win64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Win64|x64">
+      <Configuration>Debug Win64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9C8C2B9D-8885-4AEF-B1B7-2F749D0F2AFB}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <OutDir>..\scripts\PLUGINS\43341C03-MKD-[SLES-52705]\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <OutDir>..\scripts\PLUGINS\43341C03-MKD-[SLES-52705]\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <NMakeOutput>$(OutDir)MKAHook.elf</NMakeOutput>
+    <NMakeBuildCommandLine>../external/ps2sdk/ee/bin/vsmake</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean &amp;&amp; $(SolutionDir)/../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ 
+set "path=Z:/GitHub/pcsx2/bin/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/"
+setlocal EnableDelayedExpansion
+set "file=../data/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/PCSX2PluginDemo3.elf"
+FOR %%i IN ("%file%") DO (
+set filename=%%~ni
+set fileextension=%%~xi
+set target=!path!!filename!!fileextension!
+if exist "!target!" copy /y "%%~fi" "!target!"
+)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>
+    </NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>
+    </NMakeIncludeSearchPath>
+    <AdditionalOptions>
+    </AdditionalOptions>
+    <IncludePath>D:\!Projects\PS2\PCSX2PluginInjector\external\ps2sdk\ps2sdk\ee\include;D:\!Projects\PS2\PCSX2PluginInjector\external\ps2sdk\ee\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <NMakeOutput>$(OutDir)MKAHook.elf</NMakeOutput>
+    <NMakeBuildCommandLine>../external/ps2sdk/ee/bin/vsmake</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean &amp;&amp; $(SolutionDir)/../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ 
+set "path=Z:/GitHub/pcsx2/bin/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/"
+setlocal EnableDelayedExpansion
+set "file=../data/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/PCSX2PluginDemo3.elf"
+FOR %%i IN ("%file%") DO (
+set filename=%%~ni
+set fileextension=%%~xi
+set target=!path!!filename!!fileextension!
+if exist "!target!" copy /y "%%~fi" "!target!"
+)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>
+    </NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>
+    </NMakeIncludeSearchPath>
+    <AdditionalOptions>
+    </AdditionalOptions>
+    <IncludePath>D:\!Projects\PS2\PCSX2PluginInjector\external\ps2sdk\ps2sdk\ee\include;D:\!Projects\PS2\PCSX2PluginInjector\external\ps2sdk\ee\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c" />
+    <ClCompile Include="mkahook.c" />
+    <ClCompile Include="ps2mem.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mkahook.h" />
+    <ClInclude Include="mkarmageddon.h" />
+    <ClInclude Include="ps2mem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="makefile" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
