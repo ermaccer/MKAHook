@@ -2,6 +2,8 @@
 #include "ps2mem.h"
 #include "mkahook.h"
 
+int CompatibleCRCList[] = { 0x433A82D4 };
+
 void init()
 {
     MKArmageddon_Init();
