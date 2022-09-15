@@ -19,14 +19,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <OutDir>..\scripts\PLUGINS\43341C03-MKD-[SLES-52705]\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <OutDir>..\scripts\PLUGINS\43341C03-MKD-[SLES-52705]\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -87,14 +87,22 @@ if exist "!target!" copy /y "%%~fi" "!target!"
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="character.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mkahook.c" />
+    <ClCompile Include="mkarmageddon.c" />
+    <ClCompile Include="pcsx2\mips.c" />
     <ClCompile Include="ps2mem.c" />
+    <ClCompile Include="stage.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="character.h" />
     <ClInclude Include="mkahook.h" />
     <ClInclude Include="mkarmageddon.h" />
+    <ClInclude Include="pcsx2\mips.h" />
     <ClInclude Include="ps2mem.h" />
+    <ClInclude Include="stage.h" />
+    <ClInclude Include="toc.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />

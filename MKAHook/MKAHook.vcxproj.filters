@@ -18,6 +18,18 @@
     <ClCompile Include="mkahook.c">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="stage.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="pcsx2\mips.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="character.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mkarmageddon.c">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ps2mem.h">
@@ -27,6 +39,18 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="mkahook.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="toc.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="pcsx2\mips.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,39 +26,43 @@ short characters[] = {
 };
 
 short backgrounds[] = {
+	BGS_SUBWAY,
+	BGS_PRISON,
 	BGS_ARMORY,
-	BGS_BATTLEARENA,
 	BGS_BELLTOWER,
-	BGS_EVILTOWER,
-	BGS_FALLINGCLIFF,
-	BGS_FIREWELL,
+	BGS_NIS_BGND,
 	BGS_GOROS_LAIR,
+	BGS_BATTLEARENA,
+	BGS_WASTELANDS,
+	BGS_REPTILESLAIR,
 	BGS_HELL,
-	BGS_HELLSFOUNDRY,
 	BGS_LUMBERMILL,
 	BGS_PYRAMIDTOP,
-	BGS_METEORSTORM,
-	BGS_NETHERBELLY,
-	BGS_PRISON,
-	BGS_REPTILESLAIR,
 	BGS_SKYTEMPLE,
+	BGS_FALLINGCLIFFS,
+	BGS_HELLSFOUNDRY,
+	BGS_NETHERBELLY,
+	BGS_METEORSTORM,
+	BGS_FIREWELL,
 	BGS_SOULCHAMBER,
-	BGS_SUBWAY,
-	BGS_WASTELANDS,
+	BGS_EVILTOWER,
 	BGS_OUTWORLDSPIRE,
-	BGS_KON_JUNGLE4_ARENA,
-	BGS_KON_ICEPATH_ARENA,
-	BGS_KON_ICEPALACE_ARENA,
-	BGS_KON_FIREMOUNTAIN_ARENA,
-	BGS_KON_INNERSPIRE_ARENA1,
+	BGS_KON_JUNGLE_4,
+	BGS_KON_ICEPATH_ARENA_1,
+	BGS_KON_ICEPALACE_ARENA_1,
+	BGS_KON_OBELISK_2,
+	BGS_KON_FIREMOUNTAIN,
+	BGS_KON_INNERSPIRE,
 	BGS_KON_THRONEROOM,
 	BGS_KON_MAPROOM,
 	BGS_KON_SK_THRONEROOM,
+	BGS_KON_OBELISK_1,
+	BGS_KON_PRISON_2,
 	BGS_KON_SK_BALCONY,
-	BGS_KON_SCORPION_LAIR,
-	BGS_KON_FOREST,
-	BGS_KON_CAVE_ARENA,
-	BGS_KON_RED_CAVE_ARENA,
+	BGS_KON_SCORPIONS_LAIR,
+	BGS_KON_FINAL_BATTLE,
+	BGS_KON_FOREST_FA,
+	BGS_KON_RED_CAVE_FA,
 };
 
 struct ladder_entry my_ladder[8];
@@ -73,7 +77,7 @@ int hook_get_one_tower(int max)
 
 void make_custom_tower()
 {
-	int ladder_addr = 0x5E7D20;
+	int ladder_addr = 0x5E4CB0;
 	for (int i = 0; i < 8; i++)
 	{
 		int fighter_id = -1;
@@ -85,6 +89,7 @@ void make_custom_tower()
 			fighter_id = BLAZE;
 			background_id = BGS_PYRAMIDTOP;
 		}
+#ifndef BOSS_TOWER
 		else if (i == 6) // sub boss
 		{
 			table_size = sizeof(sub_bosses) / sizeof(sub_bosses[0]);
@@ -99,7 +104,6 @@ void make_custom_tower()
 			while (is_in_my_ladder(fighter_id))
 				fighter_id = characters[randu(table_size)];
 		}
-
 		table_size = sizeof(backgrounds) / sizeof(backgrounds[0]);
 		if (!(background_id == BGS_PYRAMIDTOP))
 		{
@@ -108,6 +112,49 @@ void make_custom_tower()
 			while (is_map_in_my_ladder(background_id))
 				background_id = backgrounds[randu(table_size)];
 		}
+#endif
+#ifdef BOSS_TOWER
+		//SHANG TSUNG 
+		//GORO
+		//KINTARO
+		//MOTARO
+		//MOLOCH
+		//SHAO KAHN
+		//ONAGA
+		switch (i)
+		{
+		case 6:
+			fighter_id = SHAOKAHN; 
+			background_id = BGS_KON_SK_THRONEROOM;
+			break;
+		case 5:
+			fighter_id = ONAGA; 
+			background_id = BGS_OUTWORLDSPIRE;
+			break;
+		case 4:
+			fighter_id = MOLOCH;
+			background_id = BGS_GOROS_LAIR;
+			break;
+		case 3:
+			fighter_id = MOTARO; 
+			background_id = BGS_KON_SK_BALCONY;
+			break;
+		case 2:
+			fighter_id = KINTARO; 
+			background_id = BGS_BATTLEARENA;
+			break;
+		case 1:
+			fighter_id = GORO; 
+			background_id = BGS_GOROS_LAIR;
+			break;
+		case 0:
+			fighter_id = SHANGTSUNG; 
+			background_id = BGS_KON_THRONEROOM;
+			break;
+		default:
+			break;
+		}
+#endif
 
 
 		game_printf("Setting %d as %d on %d\n", i, fighter_id, background_id);
@@ -148,8 +195,3 @@ int is_map_in_my_ladder(int id)
 	return result;
 }
 
-void MKArmageddon_Init()
-{
-	randu = (void*)(0x1865A0);
-	game_printf = (void*)(0x1DD738);
-}
