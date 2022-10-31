@@ -30,6 +30,9 @@
     <ClCompile Include="mkarmageddon.c">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="ssf.c">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ps2mem.h">
@@ -51,6 +54,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="character.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ssf.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

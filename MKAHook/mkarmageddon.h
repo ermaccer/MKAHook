@@ -1,8 +1,9 @@
 #pragma once
+#include "ssf.h"
 
 extern int(*randu)(int max);
 extern void (*game_printf)(char* format, ...);
-
+extern void (*load_ssf)(struct mem_ssf_header* ssf);
 
 enum characters
 {

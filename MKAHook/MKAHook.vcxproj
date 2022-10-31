@@ -93,6 +93,7 @@ if exist "!target!" copy /y "%%~fi" "!target!"
     <ClCompile Include="mkarmageddon.c" />
     <ClCompile Include="pcsx2\mips.c" />
     <ClCompile Include="ps2mem.c" />
+    <ClCompile Include="ssf.c" />
     <ClCompile Include="stage.c" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +102,7 @@ if exist "!target!" copy /y "%%~fi" "!target!"
     <ClInclude Include="mkarmageddon.h" />
     <ClInclude Include="pcsx2\mips.h" />
     <ClInclude Include="ps2mem.h" />
+    <ClInclude Include="ssf.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="toc.h" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 //#define BOSS_TOWER
+//#define SSF_DUMPER
 
 int hook_get_one_tower(int max);
 void make_custom_tower();
