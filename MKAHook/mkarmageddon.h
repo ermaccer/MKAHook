@@ -1,9 +1,25 @@
 #pragma once
 #include "ssf.h"
 
+#define PLAYER1_INFO   0x5E43F4 
+#define PLAYER2_INFO   0x5E4460
+#define PLAYER_DATA    0x5D63A4 
+
+struct CVector
+{
+	float x, y, z;
+};
+
+
 extern int(*randu)(int max);
 extern void (*game_printf)(char* format, ...);
 extern void (*load_ssf)(struct mem_ssf_header* ssf);
+
+extern void(*set_cam_pos)(struct CVector* pos);
+extern void(*set_cam_rot)(struct CVector* rot);
+extern void(*set_cam_target)(struct CVector* rot);
+
+extern void(*render)();
 
 enum characters
 {
