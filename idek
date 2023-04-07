@@ -1,0 +1,158 @@
+void Menu_ProcessCustomCams()
+{
+	struct player_info plr1 = *(struct player_info*)PLAYER1_INFO;
+	struct player_info plr2 = *(struct player_info*)PLAYER2_INFO;
+	if (plr1.pObject && plr2.pObject)
+	{
+		struct CVector headPos;
+		struct CVector rightMat;
+		struct CVector forwardMat;
+		struct CVector headPosP2;
+		static int id = 16;
+		if (m_bThirdPersonCam)
+			id = 14;
+		else
+			id = 16;
+
+		get_bone_pos(plr1.pObject, id, &headPos);
+		get_bone_pos(plr2.pObject, id, &headPosP2);
+
+		get_matrix_right(plr1.pObject, &rightMat);
+		get_matrix_forward(plr1.pObject, &forwardMat);
+
+		if (m_bFirstPersonCam)
+		{
+			headPos.x += rightMat.x * headOffset;
+			headPos.y += rightMat.y * headOffset;
+			headPos.z += rightMat.z * headOffset;
+
+			headPos.x += forwardMat.x * headDistance;
+			headPos.y += forwardMat.y * headDistance;
+			headPos.z += forwardMat.z * headDistance;
+		}
+		else
+		{
+			headPos.y += headOffset3;
+
+			headPos.x += forwardMat.x * headDistance3;
+			headPos.y += forwardMat.y * headDistance3;
+			headPos.z += forwardMat.z * headDistance3;
+		}
+
+		set_cam_pos(&headPos);
+		set_cam_target(&headPosP2);
+	}
+}
+
+void Menu_ProcessFreeCamera()
+{
+	int camera = *(int*)0x5D6698;
+
+	if (m_bFreeCamera)
+	{
+		static float camSpeed = 0.15f;
+
+		if (GetAsyncKeyState(90))
+			camSpeed = 0.07f;
+		else
+			camSpeed = 0.15f;
+
+		if (GetAsyncKeyState(87))
+			camPos.z -= camSpeed;
+		if (GetAsyncKeyState(83))
+			camPos.z += camSpeed;
+
+		if (GetAsyncKeyState(65))
+			camPos.x -= camSpeed;
+		if (GetAsyncKeyState(68))
+			camPos.x += camSpeed;
+
+		if (GetAsyncKeyState(81))
+			camPos.y += camSpeed;
+		if (GetAsyncKeyState(69))
+			camPos.y -= camSpeed;
+
+		if (GetAsyncKeyState(37))
+			camRot.y += camSpeed / 4.0f;
+		if (GetAsyncKeyState(39))
+			camRot.y -= camSpeed / 4.0f;
+
+		if (GetAsyncKeyState(38))
+			camRot.x -= camSpeed / 4.0f;
+		if (GetAsyncKeyState(40))
+			camRot.x += camSpeed / 4.0f;
+
+		if (GetAsyncKeyState(88))
+			camRot.z -= camSpeed / 4.0f;
+		if (GetAsyncKeyState(67))
+			camRot.z += camSpeed / 4.0f;
+
+		set_cam_pos(&camPos);
+		set_cam_rot(&camRot);
+
+
+
+	}
+	else
+	{
+		if (camera)
+		{
+			camPos = *(struct CVector*)(camera + 160);
+			camRot = *(struct CVector*)(camera + 208);
+		}
+
+	}
+
+}
+
+void Menu_Toggle_FreeCam()
+{
+	if (get_game_tick() - m_nTimer <= 15) return;
+	m_nTimer = get_game_tick();
+	m_bFreeCamera = !m_bFreeCamera;
+}
+
+void setFov(float value)
+{
+	*(float*)(0x5D4DD4) = value;
+}
+
+void update_player1_scale()
+{
+	struct player_info plr1 = *(struct player_info*)PLAYER1_INFO;
+	if (plr1.pObject)
+	{
+		int obj = plr1.pObject;
+		float scale = m_nP1Scale;
+
+		{
+			*(char*)(obj + 8) = *(char*)(obj + 8) & 0xFFFFFFBF | 0x40;
+
+			{
+				*(float*)(obj + 240) = scale;
+				*(float*)(obj + 244) = scale;
+				*(float*)(obj + 248) = scale;
+			}
+		}
+	}
+}
+
+void update_player2_scale()
+{
+	struct player_info plr2 = *(struct player_info*)PLAYER2_INFO;
+	if (plr2.pObject)
+	{
+		int obj = plr2.pObject;
+		float scale = m_nP2Scale;
+
+		{
+			*(char*)(obj + 8) = *(char*)(obj + 8) & 0xFFFFFFBF | 0x40;
+
+			{
+				*(float*)(obj + 240) = scale;
+				*(float*)(obj + 244) = scale;
+				*(float*)(obj + 248) = scale;
+			}
+		}
+	}
+}
