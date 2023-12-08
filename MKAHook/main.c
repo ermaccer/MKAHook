@@ -1,18 +1,31 @@
 #include <stdio.h>
 #include "ps2mem.h"
 #include "mkarmageddon.h"
+#include "mkamenu.h"
 #include "mkahook.h"
 #include "stage.h"
 #include "character.h"
-#include <string.h>
+#include "ladder.h"
+#include "toc.h"
 
 int CompatibleCRCList[] = { 0x104F08F4 };
+void null() {}
 
-
+void dummy() {}
 void init()
 {
-    MKArmageddon_Init();
-    makeJal(0x33471C, hook_get_one_tower);
+   hook_timer = 0;
+   init_ladder_hook();
+   init_variables();
+   Menu_Init_Vars();
+   makeJal(0x122A9C, hook_render);
+   makeJal(0x198B84, Menu_Init);
+
+   _printf("MKAHook init!\n");
+
+  // makeJal(0x1554CC, hook_menu_create_proc);
+  // makeJal(0x16A848, hook_set_single_fight);
+
 
 #ifdef SSF_DUMPER
     makeJal(0x133348, hook_load_ssf);

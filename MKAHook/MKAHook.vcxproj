@@ -42,18 +42,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <NMakeOutput>$(OutDir)MKAHook.elf</NMakeOutput>
-    <NMakeBuildCommandLine>../external/ps2sdk/ee/bin/vsmake</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean &amp;&amp; $(SolutionDir)/../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ 
-set "path=Z:/GitHub/pcsx2/bin/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/"
-setlocal EnableDelayedExpansion
-set "file=../data/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/PCSX2PluginDemo3.elf"
-FOR %%i IN ("%file%") DO (
-set filename=%%~ni
-set fileextension=%%~xi
-set target=!path!!filename!!fileextension!
-if exist "!target!" copy /y "%%~fi" "!target!"
-)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>rebuild.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>rebuild.bat</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del /s *.o</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>
     </NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>
@@ -64,18 +55,9 @@ if exist "!target!" copy /y "%%~fi" "!target!"
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <NMakeOutput>$(OutDir)MKAHook.elf</NMakeOutput>
-    <NMakeBuildCommandLine>../external/ps2sdk/ee/bin/vsmake</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean &amp;&amp; $(SolutionDir)/../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ 
-set "path=Z:/GitHub/pcsx2/bin/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/"
-setlocal EnableDelayedExpansion
-set "file=../data/scripts/PLUGINS/43341C03-MKD-[SLES-52705]/PCSX2PluginDemo3.elf"
-FOR %%i IN ("%file%") DO (
-set filename=%%~ni
-set fileextension=%%~xi
-set target=!path!!filename!!fileextension!
-if exist "!target!" copy /y "%%~fi" "!target!"
-)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>call ../external/ps2sdk/ee/bin/vsmake -C $(SolutionDir)/$(ProjectName)/ clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>rebuild.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>rebuild.bat</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del /s *.o</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>
     </NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>
@@ -88,8 +70,11 @@ if exist "!target!" copy /y "%%~fi" "!target!"
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="character.c" />
+    <ClCompile Include="inf.c" />
+    <ClCompile Include="ladder.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mkahook.c" />
+    <ClCompile Include="mkamenu.c" />
     <ClCompile Include="mkarmageddon.c" />
     <ClCompile Include="pcsx2\mips.c" />
     <ClCompile Include="ps2mem.c" />
@@ -98,7 +83,10 @@ if exist "!target!" copy /y "%%~fi" "!target!"
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h" />
+    <ClInclude Include="inf.h" />
+    <ClInclude Include="ladder.h" />
     <ClInclude Include="mkahook.h" />
+    <ClInclude Include="mkamenu.h" />
     <ClInclude Include="mkarmageddon.h" />
     <ClInclude Include="pcsx2\mips.h" />
     <ClInclude Include="ps2mem.h" />

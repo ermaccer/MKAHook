@@ -1,194 +1,140 @@
 #include "mkahook.h"
 #include "mkarmageddon.h"
+#include "inf.h"
+#include "mkamenu.h"
+#include "ps2mem.h"
 
-// 8 - boss
-// 7 - sub boss
-// 1-6 - fighters
-
-
-short sub_bosses[] = {
-	GORO, KINTARO, SHAOKAHN, MOTARO, ONAGA,MOLOCH
-};
-
-short characters[] = {
-	ASHRAH,BARAKA,BORAICHO,
-	CAGE,CHAMELEON,CYRAX,
-	DAEGON,DAIROU,DARRIUS,DRAHMIN,
-	ERMAC,FROST,FUJIN,HAVIK,HOTARU,
-	HSUHAO,JADE,JAREK,JAX,KABAL,KAI,KANO,KENSHI,
-	KIRA,KITANA,KOBRA,KUNGLAO,QUANCHI,
-	LIMEI,LIUKANG,MAVADO,MEAT,MILEENA,
-	MOKAP,NIGHTWOLF,NITARA,NOOB,RAIDEN,SHINNOK,
-	RAIN,REIKO,REPTILE,SAREENA,SCORPION,
-	SEKTOR,SHEEVA,SHUJINKO,SINDEL,SMOKE,
-	SONYA,STRYKER,SUBZERO,TANYA,TAVEN,
-	SHANGTSUNG
-};
-
-short backgrounds[] = {
-	BGS_SUBWAY,
-	BGS_PRISON,
-	BGS_ARMORY,
-	BGS_BELLTOWER,
-	BGS_GOROS_LAIR,
-	BGS_BATTLEARENA,
-	BGS_WASTELANDS,
-	BGS_REPTILESLAIR,
-	BGS_HELL,
-	BGS_LUMBERMILL,
-	BGS_PYRAMIDTOP,
-	BGS_SKYTEMPLE,
-	BGS_FALLINGCLIFFS,
-	BGS_HELLSFOUNDRY,
-	BGS_NETHERBELLY,
-	BGS_METEORSTORM,
-	BGS_FIREWELL,
-	BGS_SOULCHAMBER,
-	BGS_EVILTOWER,
-	BGS_OUTWORLDSPIRE,
-	BGS_KON_JUNGLE_4,
-	BGS_KON_ICEPATH_ARENA_1,
-	BGS_KON_ICEPALACE_ARENA_1,
-	BGS_KON_OBELISK_2,
-	BGS_KON_FIREMOUNTAIN,
-	BGS_KON_INNERSPIRE,
-	BGS_KON_THRONEROOM,
-	BGS_KON_MAPROOM,
-	BGS_KON_SK_THRONEROOM,
-	BGS_KON_PRISON_2,
-	BGS_KON_SK_BALCONY,
-	BGS_KON_SCORPIONS_LAIR,
-	BGS_KON_FINAL_BATTLE,
-	BGS_KON_FOREST_FA,
-	BGS_KON_RED_CAVE_FA,
-};
-
-struct ladder_entry my_ladder[8];
-
-
-int hook_get_one_tower(int max)
+int single_fight_text = -1;
+int single_fight_active = 0;
+int frontend_timer = 0;
+int variable = 0;
+int originalSelected = 0;
+void init_variables()
 {
-	make_custom_tower();
-	// return 0 so that first tower always gets picked
-	return 0;
+	single_fight_text = -1;
+	single_fight_active = 0;
+	frontend_timer = get_game_tick();
+	variable = 75068;
+	originalSelected = 0;
 }
 
-void make_custom_tower()
+void process_mkahook()
 {
-	int ladder_addr = 0x5E4CB0;
-	for (int i = 0; i < 8; i++)
+	if (get_game_state() == STATE_GAME)
+		process_single_fight();
+	
+	if (get_game_state() == STATE_GAME)
+		Menu_Process();
+	else if (get_game_state() == STATE_KONQUEST || get_game_state() == STATE_KRYPT || get_game_state() == STATE_MOTOR_KOMBAT)
+		Misc_ProcessCameras();
+	else
 	{
-		int fighter_id = -1;
-		int background_id = -1;
-		int table_size = 0;
-		// boss
-		if (i == 7)
+		Menu_Unset();
+	}
+
+}
+
+void hook_render()
+{
+	process_mkahook();
+	render();
+}
+
+void hook_menu_create_proc()
+{
+	int procResult = 0;
+	single_fight_text = -1;
+	if (create_mkproc_generic_nostack(12001, 32, &p_mkahook_menu_proc, 12, &procResult))
+		*(int*)(procResult + 8) = 0;
+
+
+	((void(*)())0x181AD0)();
+}
+
+void toggle_single_fight()
+{
+	if (get_game_tick() - frontend_timer <= 15) return;
+	frontend_timer = get_game_tick();
+	single_fight_active = !single_fight_active;
+	if (single_fight_active)
+		snd_req(SINGLEFIGHT_ACTIVATE_SND);
+	else
+		snd_req(SINGLEFIGHT_DEACTIVATE_SND);
+}
+
+void hook_set_single_fight()
+{
+	player_info* plr2_info = (player_info*)PLAYER2_INFO;
+
+	if (single_fight_active)
+	plr2_info->selected = 0;
+	start_plyrs();
+	//plr2_info->selected = originalSelected;
+}
+
+void process_single_fight()
+{
+	if (single_fight_active && get_game_mode() == MODE_VERSUS)
+	{
+		player_info* plr2_info = (player_info*)PLAYER2_INFO;
+		int winner = *(int*)0x64E124;
+		if (winner == 1)
 		{
-			fighter_id = BLAZE;
-			background_id = BGS_PYRAMIDTOP;
-		}
-#ifndef BOSS_TOWER
-		else if (i == 6) // sub boss
-		{
-			table_size = sizeof(sub_bosses) / sizeof(sub_bosses[0]);
-			fighter_id = sub_bosses[randu(table_size)];
+			plr2_info->selected = 2;
 		}
 		else
-		{
-			table_size = sizeof(characters) / sizeof(characters[0]);
-			fighter_id = characters[randu(table_size)];
+			plr2_info->selected = 0;
 
-
-			while (is_in_my_ladder(fighter_id))
-				fighter_id = characters[randu(table_size)];
-		}
-		table_size = sizeof(backgrounds) / sizeof(backgrounds[0]);
-		if (!(background_id == BGS_PYRAMIDTOP))
-		{
-			background_id = backgrounds[randu(table_size)];
-
-			while (is_map_in_my_ladder(background_id))
-				background_id = backgrounds[randu(table_size)];
-		}
-#endif
-#ifdef BOSS_TOWER
-		//SHANG TSUNG 
-		//GORO
-		//KINTARO
-		//MOTARO
-		//MOLOCH
-		//SHAO KAHN
-		//ONAGA
-		switch (i)
-		{
-		case 6:
-			fighter_id = SHAOKAHN; 
-			background_id = BGS_KON_SK_THRONEROOM;
-			break;
-		case 5:
-			fighter_id = ONAGA; 
-			background_id = BGS_OUTWORLDSPIRE;
-			break;
-		case 4:
-			fighter_id = MOLOCH;
-			background_id = BGS_GOROS_LAIR;
-			break;
-		case 3:
-			fighter_id = MOTARO; 
-			background_id = BGS_KON_SK_BALCONY;
-			break;
-		case 2:
-			fighter_id = KINTARO; 
-			background_id = BGS_BATTLEARENA;
-			break;
-		case 1:
-			fighter_id = GORO; 
-			background_id = BGS_GOROS_LAIR;
-			break;
-		case 0:
-			fighter_id = SHANGTSUNG; 
-			background_id = BGS_KON_THRONEROOM;
-			break;
-		default:
-			break;
-		}
-#endif
-
-
-		game_printf("Setting %d as %d on %d\n", i, fighter_id, background_id);
-		my_ladder[i].background = my_ladder[i].backgroundLocked = background_id;
-		my_ladder[i].character = my_ladder[i].characterLocked = fighter_id;
-	}
-
-	for (int i = 0; i < 8; i++)
-	{
-		int ladder_entry_addr = (ladder_addr + (sizeof(struct ladder_entry) * i));
-		*(struct ladder_entry*)(ladder_entry_addr) = my_ladder[i];
 	}
 }
 
-int is_in_my_ladder(int id)
+float p_mkahook_menu_proc()
 {
-	int result = 0;
-	for (int i = 0; i < 8; i++)
+	int apdata = *(int*)PROC_DATA;
+	float result = 0.0f;
+	static int alpha = 254;
+	static int go_up = 0;
+	if (single_fight_text == -1)
 	{
-		if (my_ladder[i].character == id)
-			result = 1;
+		load_font(8);
+		single_fight_text = string_left_xy(0, 0, "SINGLE FIGHT ACTIVE", 50, 400, 1);
 	}
-	// hack for onaga since he's 10 for some reason
-	if (id == ONAGA)
-		result = 1;
-	return result;
-}
 
-int is_map_in_my_ladder(int id)
-{
-	int result = 0;
-	for (int i = 0; i < 8; i++)
+	if (check_switch(0, PAD_L3))
+		toggle_single_fight();
+
+	if (single_fight_active)
 	{
-		if (my_ladder[i].background == id)
-			result = 1;
+		if (go_up)
+			alpha += 1;
+		else
+			alpha -= 1;
+
+
+		if (alpha < 123)
+		{
+			go_up = 1;
+			alpha = 124;
+		}
+		if (alpha > 254)
+		{
+			alpha = 253;
+			go_up = 0;
+		}
+
+
+
+
+		string_set_alpha(0, alpha);
 	}
+	else
+	{
+		alpha = 254;
+		string_set_alpha(0, 0);
+	}
+
+
+	result = 1.0f;
 
 	return result;
 }

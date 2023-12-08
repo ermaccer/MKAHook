@@ -86,7 +86,7 @@ void dump_character_info()
 			chr.alt_file_table,
 			chr.scriptName,
 			chr.loadName);
-		game_printf(msgBuffer);
+		_printf(msgBuffer);
 	}
 }
 

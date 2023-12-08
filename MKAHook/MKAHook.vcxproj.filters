@@ -33,6 +33,15 @@
     <ClCompile Include="ssf.c">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="inf.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mkamenu.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ladder.c">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ps2mem.h">
@@ -57,6 +66,15 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="ssf.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="inf.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="mkamenu.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ladder.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

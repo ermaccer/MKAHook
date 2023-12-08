@@ -1,5 +1,6 @@
 EE_BIN = ../scripts/MKAHook.elf
-EE_OBJS = main.o mkahook.o mkarmageddon.o ps2mem.o stage.o pcsx2/mips.o character.o ssf.o
+EE_OBJS = main.o mkahook.o mkarmageddon.o ps2mem.o stage.o pcsx2/mips.o character.o ssf.o inf.o mkamenu.o \
+ladder.o
 
 BASE_ADDRESS = 0x02020000
 EE_LINKFILE = linkfile
